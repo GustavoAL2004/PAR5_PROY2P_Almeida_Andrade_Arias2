@@ -53,19 +53,16 @@ public class MainActivity extends AppCompatActivity {
         String contrasenia = editText_contraseña.getText().toString();
         boolean accesoConcedido = false;
 
-        try (InputStream is = getAssets().open("usuarios.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                String[] listado = linea.split(";");
+        File archivo=new File(getFilesDir(),"usuarios.txt");
+        try (BufferedReader bf=new BufferedReader(new FileReader(archivo))){
+            String linea=bf.readLine();
+            while (linea != null) {
+                String[] listado = linea.split(",");
                 String cred_usuario = listado[0];
                 String cred_contasenia = listado[1];
-                reader.readLine();
-
+                linea=bf.readLine();
                 if (cred_usuario.equals(usuario) && cred_contasenia.equals(contrasenia)) {
                     accesoConcedido = true;
-                    break;
                 }
             }
         } catch (IOException e) {
@@ -73,12 +70,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Error al leer el archivo de Usuarios.txt", Toast.LENGTH_SHORT).show();
         }
         if (accesoConcedido) {
+            Toast.makeText(this,"Se ha iniciado sesion correctamente",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(this, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show();
-
+            try {
+                throw new CredencialesInvalidasException("Usuario o  contraseña son incorrectos");
+            }catch (CredencialesInvalidasException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
