@@ -58,15 +58,17 @@ public class MainActivity extends AppCompatActivity {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 String[] listado = linea.split(",");
-                String cred_usuario = listado[0];
-                String cred_contasenia = listado[1];
+                String cred_usuario = listado[1];
+                String cred_contasenia = listado[2];
                 reader.readLine();
+                Toast.makeText(this,cred_contasenia,Toast.LENGTH_SHORT).show();
                 if (cred_usuario.equals(usuario) && cred_contasenia.equals(contrasenia)) {
                     accesoConcedido = true;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(this,"Ocurrio un problema al leer el archivo",Toast.LENGTH_SHORT).show();
         }
 
         if (accesoConcedido) {
