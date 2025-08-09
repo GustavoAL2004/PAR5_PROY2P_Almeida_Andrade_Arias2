@@ -1,0 +1,10 @@
+1,juanperez,1234
+2,maria.lopez,abcd
+3,carlos_gomez,pass2023
+4,ana.martinez,clave123
+5,luisfernandez,admin01
+6,sofia.torres,qwerty
+7,javier_ruiz,9876
+8,paula.sanchez,test123
+9,diego.mendez,seguro22
+10,camila.rojas,passw0rd
