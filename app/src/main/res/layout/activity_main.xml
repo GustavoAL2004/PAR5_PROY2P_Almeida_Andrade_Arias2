@@ -5,31 +5,29 @@
     android:id="@+id/TextView_IniciarSesion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:textAlignment="center">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout_IniciarSesion"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView_Titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Iniciar Sesión"
             android:textAlignment="center"
             android:textSize="34sp"
-            tools:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="32dp" />
 
         <TextView
             android:id="@+id/textView_Usuario"
@@ -44,14 +42,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="mgomez" />
+            android:hint="Ej: mgomez"
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/textView_Contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contraseña"
-            tools:textSize="20sp" />
+            android:text="Contraseña:"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editText_contraseña"
@@ -59,18 +58,14 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
-            android:text="Name" />
+            android:hint="Ingrese su contraseña"
+            android:layout_marginBottom="24dp" />
 
-        <RadioGroup
+        <Button
+            android:id="@+id/button_IniciarSesion"
             android:layout_width="match_parent"
-            android:layout_height="83dp" >
-
-            <Button
-                android:id="@+id/button_IniciarSesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="IniciarSesion"
-                android:text="INICIAR SESION" />
-        </RadioGroup>
+            android:layout_height="wrap_content"
+            android:onClick="IniciarSesion"
+            android:text="INICIAR SESIÓN" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

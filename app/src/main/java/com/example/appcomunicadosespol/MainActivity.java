@@ -1,5 +1,6 @@
 package com.example.appcomunicadosespol;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,25 +48,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void IniciarSesion(View view){
-        String usuario=editText_Usuario.getText().toString();
-        String contrasenia=editText_contraseña.getText().toString();
+    public void IniciarSesion(View view) {
+        String usuario = editText_Usuario.getText().toString();
+        String contrasenia = editText_contraseña.getText().toString();
+        boolean accesoConcedido = false;
 
         try (InputStream is = getAssets().open("usuarios.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 
             String linea;
             while ((linea = reader.readLine()) != null) {
-                String[] listado=linea.split(";");
-                String cred_usuario=listado[0];
-                String cred_contasenia=listado[1];
+                String[] listado = linea.split(";");
+                String cred_usuario = listado[0];
+                String cred_contasenia = listado[1];
                 reader.readLine();
-            }
 
+                if (cred_usuario.equals(usuario) && cred_contasenia.equals(contrasenia)) {
+                    accesoConcedido = true;
+                    break;
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(this, "Error al leer el archivo de Usuarios.txt", Toast.LENGTH_SHORT).show();
         }
+        if (accesoConcedido) {
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show();
 
-
+        }
     }
 }
