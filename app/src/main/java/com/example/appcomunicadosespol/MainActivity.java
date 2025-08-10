@@ -61,9 +61,10 @@ public class MainActivity extends AppCompatActivity {
                 String cred_usuario = listado[1];
                 String cred_contasenia = listado[2];
                 reader.readLine();
-                Toast.makeText(this,cred_contasenia,Toast.LENGTH_SHORT).show();
+
                 if (cred_usuario.equals(usuario) && cred_contasenia.equals(contrasenia)) {
                     accesoConcedido = true;
+                    linea=null;
                 }
             }
         } catch (IOException e) {
