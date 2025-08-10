@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">AppComunicadosEspol</string>
+
+    <string-array name="areas">
+        <item>Académico</item>>
+        <item>Educativo</item>>
+        <item>Investigación</item>>
+        <item>Vinculación</item>>
+        <item>Capacitación</item>>
+        <item>Deportes</item>>
+        <item>Cultura</item>>
+        <item>Servicios/Productos</item>>
+    </string-array>
+
+    <string-array name="niveles">
+        <item> Baja </item>>
+        <item> Media </item>>
+        <item> Alta </item>>
+    </string-array>
+
+
 </resources>
