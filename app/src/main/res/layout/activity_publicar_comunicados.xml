@@ -190,6 +190,7 @@
 
             <EditText
                 android:id="@+id/editTextLugar"
+                style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -215,8 +216,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="text"
-                android:text="Hay q poner calendario" />
+                android:hint="Seleccionar Fecha"
+                android:inputType="none" />
         </LinearLayout>
 
         <LinearLayout
@@ -257,6 +258,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="AdjuntarImagen"
                 android:text="Adjuntar Imagen" />
         </LinearLayout>
 
@@ -270,6 +272,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="PublicarComunicado"
                 android:text="Publicar" />
 
             <Button
@@ -277,6 +280,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="LimpiarFormulario"
                 android:text="Cancelar" />
         </LinearLayout>
 

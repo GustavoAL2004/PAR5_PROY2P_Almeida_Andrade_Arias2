@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_VerComunicados"
-        android:layout_width="404dp"
-        android:layout_height="777dp"
+        android:layout_width="392dp"
+        android:layout_height="781dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
@@ -21,6 +21,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/imagebuttonVolver"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:adjustViewBounds="true"
+            android:background="@null"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/botonvolver2" />
 
         <TextView
             android:id="@+id/textView_verComunicado"

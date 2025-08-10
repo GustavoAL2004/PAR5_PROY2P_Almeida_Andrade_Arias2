@@ -3,8 +3,10 @@ package com.example.appcomunicadosespol;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +20,8 @@ import java.util.Calendar;
 public class VerComunicadosActivity extends AppCompatActivity {
 
     private EditText editText_Fecha;
+
+    private ImageButton botonVolver;
 
     private LinearLayout linearLayout_VerComunicados;
 
@@ -34,6 +38,14 @@ public class VerComunicadosActivity extends AppCompatActivity {
 
         editText_Fecha = findViewById(R.id.editText_Fecha);
         linearLayout_VerComunicados=findViewById(R.id.linearLayout_VerComunicados);
+        botonVolver=findViewById(R.id.imagebuttonVolver);
+
+        botonVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         editText_Fecha.setOnClickListener(new View.OnClickListener() {
             @Override
