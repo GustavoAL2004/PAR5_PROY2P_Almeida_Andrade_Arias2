@@ -370,9 +370,6 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         if (checkBoxAdministrativo.isChecked()){
             audiencia += "Administrativo;";
         }
-        if (!audiencia.isEmpty()) {
-            audiencia = audiencia.substring(0, audiencia.length() - 1);
-        }
 
 
         String nombreArchivoImagen = "";
