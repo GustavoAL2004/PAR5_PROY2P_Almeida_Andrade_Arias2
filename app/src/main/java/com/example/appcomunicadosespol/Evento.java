@@ -1,9 +1,11 @@
-public class Evento extends Comunicado{
+package com.example.appcomunicadosespol;
+
+public class Evento extends Comunicado {
     private String lugar;
     private String fecha;
 
-    public Evento(String area, String audiencia, String titulo, String descripcion, String imagenURL, String lugar, String fecha) {
-        super(area, audiencia, titulo, descripcion, imagenURL);
+    public Evento(String ID, String tipo, String area, String titulo, String audiencia, String descripcion, String imagenURL, String lugar, String fecha) {
+        super(ID, tipo, area, titulo, audiencia, descripcion, imagenURL);
         this.lugar = lugar;
         this.fecha = fecha;
     }
@@ -24,12 +26,7 @@ public class Evento extends Comunicado{
         this.fecha = fecha;
     }
 
-    @Override
     public String toString() {
-        return
-                "Evento{" +
-                "lugar='" + lugar + '\'' +
-                ", fecha='" + fecha + '\'' +
-                '}';
+        return super.toString() + "," + lugar + "," + fecha;
     }
 }
