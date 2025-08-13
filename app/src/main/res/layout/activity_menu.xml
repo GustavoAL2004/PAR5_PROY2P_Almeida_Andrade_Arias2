@@ -17,18 +17,30 @@
             android:id="@+id/buttonVerComunicados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ver Comunicados" />
+            android:background="@drawable/rounded_button"
+            android:layout_margin="20dp"
+            android:text="Ver Comunicados"
+            android:textColor="@android:color/black"
+            />
 
         <Button
             android:id="@+id/buttonPublicarComunicados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Publicar Comunicados" />
+            android:background="@drawable/rounded_button"
+            android:layout_margin="20dp"
+            android:text="Publicar Comunicados"
+            android:textColor="@android:color/black"
+            />
 
         <Button
             android:id="@+id/buttonTableroComunicados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tablero Comunicados" />
+            android:background="@drawable/rounded_button"
+            android:layout_margin="20dp"
+            android:text="Tablero Comunicados"
+            android:textColor="@android:color/black"
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

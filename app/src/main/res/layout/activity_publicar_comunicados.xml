@@ -32,7 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nuevo Comunicado"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
+            android:padding="7dp"
+            android:textColor="#000080"
             android:textSize="34sp"
             android:textStyle="bold" />
 
@@ -40,14 +42,17 @@
             android:id="@+id/subLinearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="7dp">
 
             <TextView
                 android:id="@+id/texto1"
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Tipo:" />
+                android:layout_marginTop="15dp"
+                android:text="Tipo:"
+                android:textAlignment="textStart" />
 
             <RadioGroup
                 android:id="@+id/RadioGrupo1"
@@ -76,6 +81,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -88,6 +94,7 @@
             <Spinner
                 android:id="@+id/spinnerArea"
                 android:layout_width="match_parent"
+                android:background="@drawable/rounded_button"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
@@ -117,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -137,6 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="0dp"
                     android:text="Estudiantes" />
 
                 <CheckBox
@@ -144,6 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="0dp"
                     android:text="Profesores" />
 
                 <CheckBox
@@ -151,6 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginBottom="0dp"
                     android:text="Administrativo" />
             </LinearLayout>
 
@@ -159,6 +170,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -172,6 +184,7 @@
                 android:id="@+id/EditTextTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="text" />
@@ -196,6 +209,7 @@
                 style="Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="text" />
@@ -219,6 +233,7 @@
                 android:id="@+id/editTextFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Seleccionar Fecha"
@@ -228,6 +243,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -235,12 +251,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Descripcion" />
+                android:text="Descripcion"
+                android:textAlignment="viewStart" />
 
             <EditText
                 android:id="@+id/plainTextescripcion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="280dp"
+                android:layout_height="100dp"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="0"
                 android:ems="10"
                 android:inputType="text" />
@@ -250,6 +268,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -261,8 +280,10 @@
 
             <Button
                 android:id="@+id/buttonAdjuntarImagen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="190dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_button"
+                android:textColor="@android:color/black"
                 android:layout_weight="1"
                 android:onClick="AdjuntarImagen"
                 android:text="Adjuntar Imagen" />
@@ -291,16 +312,24 @@
                 android:id="@+id/buttonPublicar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_button"
                 android:onClick="PublicarComunicado"
-                android:text="Publicar" />
+                android:text="Publicar"
+                android:textColor="@android:color/black" />
 
             <Button
                 android:id="@+id/buttonCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/rounded_button"
+                android:textColor="@android:color/black"
                 android:layout_weight="1"
                 android:onClick="LimpiarFormulario"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Cancelar" />
         </LinearLayout>
 
