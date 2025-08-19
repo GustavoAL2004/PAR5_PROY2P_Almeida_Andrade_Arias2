@@ -41,9 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:background="@drawable/rounded_button"
             android:inputType="text"
             android:hint="Ej: mgomez"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:padding="12dp"
+            />
 
         <TextView
             android:id="@+id/textView_Contraseña"
@@ -57,14 +60,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:background="@drawable/rounded_button"
             android:inputType="textPassword"
             android:hint="Ingrese su contraseña"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            />
 
         <Button
             android:id="@+id/button_IniciarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_iniciar"
             android:onClick="IniciarSesion"
             android:text="INICIAR SESIÓN" />
     </LinearLayout>

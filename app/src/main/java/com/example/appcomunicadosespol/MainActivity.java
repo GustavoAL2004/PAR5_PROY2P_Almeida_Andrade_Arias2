@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         String contrasenia = editText_contraseña.getText().toString();
         boolean accesoConcedido = false;
 
-        try (InputStream is = getAssets().open("usuarios.txt");
+        try (InputStream is = getAssets().open("usuarios.txt"); 
              BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
