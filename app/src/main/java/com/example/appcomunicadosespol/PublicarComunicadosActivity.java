@@ -381,20 +381,17 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
 
         String area = spinnerArea.getSelectedItem().toString();
 
-
-        String lineaAGuardar = "";
-        if (tipoSeleccionadoId == R.id.radioButtonEsEvento) {
-            lineaAGuardar = idStr + ", evento, " + area + ", " + tituloText + ", " + audiencia + ", " +
-                    descripcionTexto + ", " + nombreArchivoImagen + ", " + lugarTexto + ", " + fechaTexto;
-        } else {
-            String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
-            lineaAGuardar = idStr + ", anuncio, " + area + ", " + tituloText + ", " + audiencia + ", " +
-                    descripcionTexto + ", " + nombreArchivoImagen + ", " + nivelUrgencia;
-        }
-
-
         File archivo = new File(getFilesDir(), "comunicado.txt");
         try (FileWriter writer = new FileWriter(archivo, true)) {
+            String lineaAGuardar = "";
+            if (tipoSeleccionadoId == R.id.radioButtonEsEvento) {
+                lineaAGuardar = idStr + ",evento," + area + "," + tituloText + "," + audiencia + "," +
+                        descripcionTexto + "," + nombreArchivoImagen + "," + lugarTexto + "," + fechaTexto;
+            } else {
+                String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
+                lineaAGuardar = idStr + ",anuncio," + area + "," + tituloText + "," + audiencia + "," +
+                        descripcionTexto + "," + nombreArchivoImagen + "," + nivelUrgencia;
+            }
             writer.write(lineaAGuardar + "\n");
             Toast.makeText(this, "Comunicado publicado correctamente", Toast.LENGTH_SHORT).show();
             LimpiarFormulario(null);

@@ -9,18 +9,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_VerComunicados"
-        android:layout_width="392dp"
-        android:layout_height="781dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <ImageButton
             android:id="@+id/imagebuttonVolver"
@@ -36,7 +29,7 @@
             android:id="@+id/textView_verComunicado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ver Comunicado"
+            android:text="Ver Comunicados"
             android:textColor="#003366"
             android:textCursorDrawable="@drawable/ic_launcher_foreground"
             android:textSize="34sp"
@@ -48,9 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Selecionar Fecha"
             android:inputType="none"
-            android:text="10/08/2025" />
+            android:text="Selecionar Fecha" />
 
         <ScrollView
             android:id="@+id/ScrollView_VerComunicados"
@@ -58,6 +50,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/contenidoDinamico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
