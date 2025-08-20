@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imagebuttonVolver2"
+            android:id="@+id/imagebuttonVolver"
             android:layout_width="49dp"
             android:layout_height="41dp"
             android:adjustViewBounds="true"
@@ -46,32 +46,39 @@
             android:layout_height="59dp"
             android:text="Ordernar por titulo" />
 
-        <TableLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="366dp">
+            android:layout_height="235dp">
 
-            <TableRow
+            <TableLayout
+                android:id="@+id/mi_tabla"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                    <TextView
+                        android:padding="8dp"
+                        android:text="Titulo"
+                        android:textStyle="bold" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
+                    <TextView
+                        android:padding="8dp"
+                        android:text="Fecha"
+                        android:textStyle="bold" />
+
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/button_GuardarLista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Giuardar Lista" />
+            android:text="Guardar Lista" />
 
         <Button
             android:id="@+id/button_Cancelar"
