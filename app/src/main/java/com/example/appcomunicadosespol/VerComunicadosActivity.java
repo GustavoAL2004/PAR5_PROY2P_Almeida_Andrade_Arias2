@@ -78,24 +78,20 @@ public class VerComunicadosActivity extends AppCompatActivity {
                         if(editText_Fecha!=null) {
                             String fecha = editText_Fecha.getText().toString();
 
-                            //Se seleccionan los eventos a partir de la fecha seleccionada.
                             contenidoDinamico.removeAllViews();
+                            //Se seleccionan los eventos a partir de la fecha seleccionada.
                             try (FileInputStream fi = openFileInput("comunicado.txt");
                                  BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
                                 String linea = reader.readLine();
-                                Boolean estado=false;
 
                                 while (linea != null) {
                                     String[] partes = linea.split(",");
                                     if (partes[1].trim().equals("Evento")) {
                                         if (partes[8].trim().equals(fecha)) {
-                                            estado=true;
+
                                             String tema = partes[3].trim();
                                             String codigoImagen = partes[6].trim();
                                             String descripcion = partes[5].trim();
-
-                                            //ContenidoDinamico
-
 
                                             //TEMA
                                             TextView temaActivity = new TextView(VerComunicadosActivity.this);
@@ -112,9 +108,9 @@ public class VerComunicadosActivity extends AppCompatActivity {
 
                                             LinearLayout.LayoutParams imgLp = new LinearLayout.LayoutParams(
                                                     LinearLayout.LayoutParams.MATCH_PARENT,
-                                                    (int) (200 * getResources().getDisplayMetrics().density) // 200dp en píxeles
+                                                    (int) (200 * getResources().getDisplayMetrics().density) //200dp en pixeles
                                             );
-                                            imgLp.setMargins(0, 16, 0, 16); // márgenes arriba y abajo
+                                            imgLp.setMargins(0, 16, 0, 16); //Margenes arriba y abajo
                                             imagenActivity.setLayoutParams(imgLp);
 
                                             //Aqui estoy recuperando la imagen que se guardo en el almacenamiento del celular anteriormente
@@ -138,9 +134,6 @@ public class VerComunicadosActivity extends AppCompatActivity {
                                         }
                                     }
                                     linea = reader.readLine();
-                                }
-                                if(!estado){
-                                    Toast.makeText(VerComunicadosActivity.this, "No se encontro eventos en la fecha dada", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (FileNotFoundException e) {
                                 Toast.makeText(VerComunicadosActivity.this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();
