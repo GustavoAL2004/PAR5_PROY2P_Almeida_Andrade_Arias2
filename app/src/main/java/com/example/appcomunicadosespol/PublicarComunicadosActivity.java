@@ -29,12 +29,15 @@ import com.example.appcomunicadosespol.Evento;  // <-- Y esta línea
 import com.example.appcomunicadosespol.Comunicado; // <-- Y esta
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
 
 public class PublicarComunicadosActivity extends AppCompatActivity {
@@ -91,7 +94,7 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
 
         spinnerNivelDeUrgencia=findViewById(R.id.spinnerNivelDeUrgencia);
         ArrayAdapter<CharSequence>adapter1=ArrayAdapter.createFromResource(this,R.array.niveles, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerNivelDeUrgencia.setAdapter(adapter1);
 
         checkBoxEstudiantes=findViewById(R.id.ckBoxEstudiantes);
@@ -103,7 +106,6 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         layoutEvento1 = findViewById(R.id.LinearLayout_Evento_pt1);
         layoutEvento2 = findViewById(R.id.LinearLayout_Evento_pt2);
         imagenSeleccionada = findViewById(R.id.imagenSeleccionada);
-
 
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -133,14 +135,12 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
                     }
                 });
         botonAdjuntarImagen=findViewById(R.id.buttonAdjuntarImagen);
-
         botonAdjuntarImagen.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
                 imagePickerLauncher.launch(intent);
-
             }
         });
 
@@ -149,8 +149,8 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radioButtonEsAnuncio) {
                     // Si el usuario selecciona com.example.appcomunicadosespol.Anuncio
-                    layoutAnuncio.setVisibility(View.VISIBLE);
-                    layoutEvento1.setVisibility(View.GONE);
+                    layoutAnuncio.setVisibility(View.VISIBLE); // VISIBLE visible para el usuario
+                    layoutEvento1.setVisibility(View.GONE); // GONE no es visible y deja de ocupar espacio
                     layoutEvento2.setVisibility(View.GONE);
                 } else if (checkedId == R.id.radioButtonEsEvento) {
                     // Si el usuario selecciona com.example.appcomunicadosespol.Evento
@@ -160,7 +160,6 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         fecha=findViewById(R.id.editTextFecha);
         fecha.setOnClickListener(new View.OnClickListener() {
@@ -176,22 +175,15 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker datePicker, int anio, int mes, int dia) {
                         String fechaSeleccionada=dia+"/"+(mes+1)+"/"+anio;
                         fecha.setText(fechaSeleccionada);
-
                     }
                 },anio,mes,dia);
                 PDP.show();
             }
         });
 
-
-
-
         descripcion=findViewById(R.id.plainTextescripcion);
-        botonAdjuntarImagen=findViewById(R.id.buttonAdjuntarImagen);
         botonPublicar=findViewById(R.id.buttonPublicar);
         botonCancelar=findViewById(R.id.buttonCancelar);
-
-
     }
     public void LimpiarFormulario(View view){
         titulo.setText("");
@@ -205,37 +197,6 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         fecha.setText("");
         radiogrupo.clearCheck();
         imagenSeleccionada.setImageURI(null);
-
-
-    }
-    private void AdjuntarImagen (View view){
-        try (FileInputStream fis = openFileInput("comunicado.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(fis))) {
-
-            String linea;
-
-            while ((linea = reader.readLine()) != null) {
-                String[] partes = linea.split(",", 3);
-                String uriStr = partes[1];
-                String texto = partes[0];
-
-                Uri uri = Uri.parse(uriStr);
-
-                LinearLayout layoutInterno = new LinearLayout(this);
-                layoutInterno.setOrientation(LinearLayout.VERTICAL);
-                layoutInterno.setPadding(0, 0, 0, 40);
-
-                ImageView imgv = new ImageView(this);
-                imgv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imgv.setImageURI(uri);
-
-                imgv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 600));
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "No se pudo cargar la imagen", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void PublicarComunicado(View view){
@@ -246,6 +207,7 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         int tipoSeleccionadoId = radiogrupo.getCheckedRadioButtonId();
         String areaSeleccionada = spinnerArea.getSelectedItem().toString();
         String audiencia = "";
+
         if (checkBoxEstudiantes.isChecked()) audiencia += "Estudiantes;";
         if (checkBoxProfesores.isChecked()) audiencia += "Profesores;";
         if (checkBoxAdministrativo.isChecked()) audiencia += "Administrativo;";
@@ -254,91 +216,81 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         if (imageUriSeleccionada != null) {
             nombreArchivoImagen = imageUriSeleccionada.getLastPathSegment();
 
+        //Validaciones
         try {
-            // --- 1. Validaciones (tu código existente) ---
             if (tipoSeleccionadoId == -1) {
                 throw new datosIncompletosException("Selecciona el tipo de comunicado.");
             }
-            if (spinnerArea.getSelectedItemPosition() == -1) {
-                throw new datosIncompletosException("Selecciona un área.");
+            if (spinnerArea.getSelectedItemPosition() == 0) {
+                throw new datosIncompletosException("Seleccione una área.");
             }
             if (!checkBoxEstudiantes.isChecked() && !checkBoxProfesores.isChecked() && !checkBoxAdministrativo.isChecked()) {
                 throw new datosIncompletosException("Elige al menos una audiencia.");
             }
             if (tituloText.isEmpty()) {
-                throw new datosIncompletosException("Llena el campo del título.");
+                throw new datosIncompletosException("Llene el campo del título.");
             }
             if (descripcionTexto.isEmpty()) {
-                throw new datosIncompletosException("Llena el campo de la descripción.");
+                throw new datosIncompletosException("Llene el campo de la descripción.");
             }
             if (imageUriSeleccionada == null) {
-                throw new datosIncompletosException("Adjunta una imagen.");
+                throw new datosIncompletosException("Adjunte una imagen.");
             }
-
             if (tipoSeleccionadoId == R.id.radioButtonEsAnuncio) {
-                if (spinnerNivelDeUrgencia.getSelectedItemPosition() == -1) {
-                    throw new datosIncompletosException("Selecciona un nivel de urgencia.");
+                if (spinnerNivelDeUrgencia.getSelectedItemPosition() == 0) {
+                    throw new datosIncompletosException("Seleccione un nivel de urgencia.");
                 }
             } else if (tipoSeleccionadoId == R.id.radioButtonEsEvento) {
                 if (lugarTexto.isEmpty()) {
-                    throw new datosIncompletosException("Llena el campo de lugar.");
+                    throw new datosIncompletosException("Llene el campo de lugar.");
                 }
                 if (fechaTexto.isEmpty()) {
-                    throw new datosIncompletosException("Llena el campo de la fecha.");
+                    throw new datosIncompletosException("Llene el campo de la fecha.");
                 }
             }
-
-            int ultimoId = 0;
-            File file = new File(getFilesDir(), "comunicado.txt");
-            if (file.exists() && file.length() > 0) {
-                FileInputStream fis = openFileInput("comunicado.txt");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
-                String ultimaLinea = null;
-                String linea;
-                while ((linea = reader.readLine()) != null) {
-                    ultimaLinea = linea;
-                }
-                if (ultimaLinea != null) {
-                    String[] partes = ultimaLinea.split(",");
-                    if (partes.length > 0) {
-                        try {
-                            ultimoId = Integer.parseInt(partes[0].trim());
-                        } catch (NumberFormatException e) {
-                            ultimoId = 0;
-                        }
-                    }
-                }
-                reader.close();
-            }
-            ultimoId++;
-            String idComunicado = String.valueOf(ultimoId);
-
-
-            if (tipoSeleccionadoId == R.id.radioButtonEsAnuncio) {
-                String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
-                Anuncio anuncio = new Anuncio(idComunicado,"Anuncio", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, nivelUrgencia);
-                lineaComunicado = anuncio.toString() + "\n";
-            } else {
-                Evento evento = new Evento(idComunicado,"Evento", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, lugarTexto, fechaTexto);
-                lineaComunicado = evento.toString() + "\n";
-            }
-
-            FileOutputStream fos = openFileOutput("comunicado.txt", MODE_APPEND);
-            fos.write(lineaComunicado.getBytes());
-            fos.close();
-
-            Toast.makeText(this, "Comunicado " + idComunicado + " publicado correctamente.", Toast.LENGTH_SHORT).show();
-            LimpiarFormulario(view);
-
         } catch (datosIncompletosException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error al guardar el comunicado.", Toast.LENGTH_SHORT).show();
         }
+
+        int ultimoId=0;
+        try(FileInputStream fis = openFileInput("comunicado.txt");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fis))){
+            String ultimaLinea = null;
+            String linea;
+
+            while ((linea = reader.readLine()) != null) {
+                ultimaLinea = linea;
+            }
+                String[] partes = ultimaLinea.split(",");
+                ultimoId = Integer.parseInt(partes[0].trim());
+        } catch (FileNotFoundException e) {
+            ultimoId=0;
+        }catch (IOException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        ultimoId++;
+        String idComunicado = String.valueOf(ultimoId);
+
+        if (tipoSeleccionadoId == R.id.radioButtonEsAnuncio) {
+            String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
+            Anuncio anuncio = new Anuncio(idComunicado,"Anuncio", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, nivelUrgencia);
+            lineaComunicado = anuncio.toString() + "\n";
+        } else {
+            Evento evento = new Evento(idComunicado,"Evento", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, lugarTexto, fechaTexto);
+            lineaComunicado = evento.toString() + "\n";
+        }
+
+        try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(openFileOutput("comunicado.txt", MODE_APPEND)))){
+            writer.write(lineaComunicado);
+            writer.newLine();
+        }catch (FileNotFoundException e){
+            Toast.makeText(this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();
+        }catch (IOException e){
+            e.printStackTrace();
+            Toast.makeText(this, "Error guardando comunicado", Toast.LENGTH_SHORT).show();
+        }
+
+        Toast.makeText(this, "Se ha publicado exitosamente su comunicado.", Toast.LENGTH_SHORT).show();
+        LimpiarFormulario(view);
     }
-
-
-
-
         }}

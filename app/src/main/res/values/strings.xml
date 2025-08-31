@@ -2,6 +2,7 @@
     <string name="app_name">AppComunicadosEspol</string>
 
     <string-array name="areas">
+        <item>Seleccione el área</item>>
         <item>Académico</item>>
         <item>Educativo</item>>
         <item>Investigación</item>>
@@ -13,6 +14,7 @@
     </string-array>
 
     <string-array name="niveles">
+        <item> Seleccione el nivel de urgencia </item>>
         <item> Baja </item>>
         <item> Media </item>>
         <item> Alta </item>>

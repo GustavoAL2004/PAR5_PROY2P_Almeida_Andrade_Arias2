@@ -78,13 +78,7 @@ public abstract class Comunicado {
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s",
-                getID(),
-                getTipo(),
-                getArea(),
-                getTitulo(),
-                getAudiencia(),
-                getDescripcion(),
-                getImagenURL());
+        return getID() + "," + getTipo() + "," + getArea() + "," + getTitulo() + "," +
+                getAudiencia() + "," + getDescripcion() + "," + getImagenURL();
     }
 }

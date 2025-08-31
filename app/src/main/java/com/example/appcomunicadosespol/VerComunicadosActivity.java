@@ -1,6 +1,7 @@
 package com.example.appcomunicadosespol;
 
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,12 +20,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class VerComunicadosActivity extends AppCompatActivity {
@@ -31,7 +32,7 @@ public class VerComunicadosActivity extends AppCompatActivity {
     private EditText editText_Fecha;
 
     private ImageButton botonVolver;
-
+    private Button BotonFecha;
     private LinearLayout contenidoDinamico;
 
     @Override
@@ -46,18 +47,20 @@ public class VerComunicadosActivity extends AppCompatActivity {
         });
 
         editText_Fecha = findViewById(R.id.editText_Fecha);
-        contenidoDinamico=findViewById(R.id.linearLayout_VerComunicados);
+        contenidoDinamico=findViewById(R.id.contenidoDinamico);
         botonVolver=findViewById(R.id.imagebuttonVolver);
 
-
+        //BotonVolver
         botonVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        Button botonFecha=findViewById(R.id.buttonFecha);
 
-        editText_Fecha.setOnClickListener(new View.OnClickListener() {
+        //Uso de calendario para seleccionar fecha
+        botonFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -69,45 +72,67 @@ public class VerComunicadosActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker datePicker, int anioSel, int mesSel, int daySel) {
                         String fechaSeleccionada = daySel + "/" + (mesSel + 1) + "/" + anioSel;
                         editText_Fecha.setText(fechaSeleccionada);
+
+                        if(editText_Fecha!=null) {
+                            String fecha = editText_Fecha.getText().toString();
+
+                            //Se seleccionan los eventos a partir de la fecha seleccionada.
+                            contenidoDinamico.removeAllViews();
+                            try (FileInputStream fi = openFileInput("comunicado.txt");
+                                 BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
+                                String linea = reader.readLine();
+                                Boolean estado=false;
+
+                                while (linea != null) {
+                                    String[] partes = linea.split(",");
+                                    if (partes[1].trim().equals("Evento")) {
+                                        if (partes[7].trim().equals(fecha)) {
+                                            estado=true;
+                                            String tema = partes[3].trim();
+                                            String codigoImagen = partes[6].trim();
+                                            String descripcion = partes[5].trim();
+
+                                            //Tema
+                                            TextView temaActivity = new TextView(VerComunicadosActivity.this);
+                                            temaActivity.setText(tema);
+                                            contenidoDinamico.addView(temaActivity);
+                                            //Creo que solo aqui se puede modificar los atributos del view.
+
+                                            //Imagen
+                                            ImageView imagenActivity = new ImageView(VerComunicadosActivity.this);
+                                            imagenActivity.setLayoutParams(new LinearLayout.LayoutParams(
+                                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                                            ));
+                                            //Aqui estoy recuperando la imagen que se guardo en el almacenamiento del celular anteriormente
+                                            File file = new File(getFilesDir(), codigoImagen);
+                                            Uri uri = Uri.fromFile(file);
+                                            //Y aqui la coloco en el View imagenActivity
+                                            imagenActivity.setImageURI(uri);
+
+                                            imagenActivity.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                            contenidoDinamico.addView(imagenActivity);
+
+                                            //Descripcion
+                                            TextView descripcionActivity = new TextView(VerComunicadosActivity.this);
+                                            descripcionActivity.setText(descripcion);
+                                            contenidoDinamico.addView(descripcionActivity);
+                                        }
+                                    }
+                                    linea = reader.readLine();
+                                }
+                                if(!estado){
+                                    Toast.makeText(VerComunicadosActivity.this, "No se encontro eventos en la fecha dada", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (FileNotFoundException e) {
+                                Toast.makeText(VerComunicadosActivity.this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                Toast.makeText(VerComunicadosActivity.this, "Error al leer el archivo", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 }, year, month, day);
                 datePick.show();
-
-                String fecha=editText_Fecha.getText().toString();
-
-                try (InputStream is = getAssets().open("comunicados.txt");
-                     BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-                    String linea=reader.readLine();
-                    while(linea!=null){
-                        String[] partes=linea.split(",");
-                        if(partes[1].equals("evento")&&partes[8].equals(fecha)){
-
-                            String tema=partes[3];
-                            String imagen=partes[6];
-                            String descripcion=partes[5];
-
-                            TextView temaActivity=new TextView(VerComunicadosActivity.this);
-                            temaActivity.setText(tema);
-                            contenidoDinamico.addView(temaActivity);
-                            //Creo que solo aqui se puede modificar los atributos del view.
-                            ImageView imagenActivity=new ImageView(VerComunicadosActivity.this);
-                            imagenActivity.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            ));
-                            //Como guardar imagen
-                            imagenActivity.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                            contenidoDinamico.addView(imagenActivity);
-
-                            TextView descripcionActivity=new TextView(VerComunicadosActivity.this);
-                            descripcionActivity.setText(descripcion);
-                            contenidoDinamico.addView(descripcionActivity);
-                            //Creo que solo aqui se puede modificar los atributos del view.
-                        }
-                        linea=reader.readLine();
-                    }
-                    }catch (IOException e){
-                }
             }
         });
     }
