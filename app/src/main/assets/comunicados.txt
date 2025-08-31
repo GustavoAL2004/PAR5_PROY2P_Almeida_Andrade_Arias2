@@ -1,4 +1,0 @@
-001,anuncio,Educativo,Prueba,Estudiantes,descripcion1,img_1754933367517.jpg,Media
-002,evento,Académico,Prueba2,Profesores;Administrativo,descripcionn,img_1754933686291.jpg,GYC,28/8/2025
-003,anuncio,Educativo,what,Estudiantes;,wha,img_1755064235780.jpg,Baja
-004,anuncio,Académico,Prueba1,Profesores;,descripcion1,img_1755064682996.jpg,Alta

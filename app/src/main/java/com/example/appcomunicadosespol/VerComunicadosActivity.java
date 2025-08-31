@@ -1,6 +1,8 @@
 package com.example.appcomunicadosespol;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -86,36 +88,52 @@ public class VerComunicadosActivity extends AppCompatActivity {
                                 while (linea != null) {
                                     String[] partes = linea.split(",");
                                     if (partes[1].trim().equals("Evento")) {
-                                        if (partes[7].trim().equals(fecha)) {
+                                        if (partes[8].trim().equals(fecha)) {
                                             estado=true;
                                             String tema = partes[3].trim();
                                             String codigoImagen = partes[6].trim();
                                             String descripcion = partes[5].trim();
 
-                                            //Tema
+                                            //ContenidoDinamico
+
+
+                                            //TEMA
                                             TextView temaActivity = new TextView(VerComunicadosActivity.this);
                                             temaActivity.setText(tema);
+                                            temaActivity.setTextSize(22);
+                                            temaActivity.setTypeface(Typeface.DEFAULT_BOLD); //Negrita
+                                            temaActivity.setTextColor(Color.parseColor("#1565C0")); //Color azul
+                                            temaActivity.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                            temaActivity.setPadding(0, 16, 0, 16); //Espacio arriba y abajo
                                             contenidoDinamico.addView(temaActivity);
-                                            //Creo que solo aqui se puede modificar los atributos del view.
 
-                                            //Imagen
+                                            //IMAGEN
                                             ImageView imagenActivity = new ImageView(VerComunicadosActivity.this);
-                                            imagenActivity.setLayoutParams(new LinearLayout.LayoutParams(
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                                            ));
+
+                                            LinearLayout.LayoutParams imgLp = new LinearLayout.LayoutParams(
+                                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                                    (int) (200 * getResources().getDisplayMetrics().density) // 200dp en píxeles
+                                            );
+                                            imgLp.setMargins(0, 16, 0, 16); // márgenes arriba y abajo
+                                            imagenActivity.setLayoutParams(imgLp);
+
                                             //Aqui estoy recuperando la imagen que se guardo en el almacenamiento del celular anteriormente
                                             File file = new File(getFilesDir(), codigoImagen);
                                             Uri uri = Uri.fromFile(file);
-                                            //Y aqui la coloco en el View imagenActivity
+                                            //Y aqui la coloco en el View imagenActivit
                                             imagenActivity.setImageURI(uri);
 
-                                            imagenActivity.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                            imagenActivity.setAdjustViewBounds(true);
+                                            imagenActivity.setScaleType(ImageView.ScaleType.FIT_CENTER);
                                             contenidoDinamico.addView(imagenActivity);
 
-                                            //Descripcion
+                                            //DESCRIPCION
                                             TextView descripcionActivity = new TextView(VerComunicadosActivity.this);
                                             descripcionActivity.setText(descripcion);
+                                            descripcionActivity.setTextSize(16);
+                                            descripcionActivity.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                            descripcionActivity.setTypeface(Typeface.SERIF);
+                                            descripcionActivity.setPadding(0, 16, 0, 0);
                                             contenidoDinamico.addView(descripcionActivity);
                                         }
                                     }

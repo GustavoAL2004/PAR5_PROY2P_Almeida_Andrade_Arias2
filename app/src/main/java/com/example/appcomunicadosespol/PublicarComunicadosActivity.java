@@ -274,10 +274,10 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         if (tipoSeleccionadoId == R.id.radioButtonEsAnuncio) {
             String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
             Anuncio anuncio = new Anuncio(idComunicado,"Anuncio", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, nivelUrgencia);
-            lineaComunicado = anuncio.toString() + "\n";
+            lineaComunicado = anuncio.toString();
         } else {
             Evento evento = new Evento(idComunicado,"Evento", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, lugarTexto, fechaTexto);
-            lineaComunicado = evento.toString() + "\n";
+            lineaComunicado = evento.toString();
         }
 
         try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(openFileOutput("comunicado.txt", MODE_APPEND)))){
