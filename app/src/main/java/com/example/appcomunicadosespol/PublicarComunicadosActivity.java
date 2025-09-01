@@ -281,7 +281,7 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         }
 
         try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(openFileOutput("comunicado.txt", MODE_APPEND)))){
-            writer.write(lineaComunicado);
+            writer.write(lineaComunicado+","+TableroComunicadosActivity.usuarioActual);
             writer.newLine();
         }catch (FileNotFoundException e){
             Toast.makeText(this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();

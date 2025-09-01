@@ -106,7 +106,7 @@ public class VerComunicadosActivity extends AppCompatActivity {
                                             //IMAGEN
                                             ImageView imagenActivity = new ImageView(VerComunicadosActivity.this);
 
-                                            LinearLayout.LayoutParams imgLp = new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams imgLp = new LinearLayout.LayoutParams( //Parametros de la imagen
                                                     LinearLayout.LayoutParams.MATCH_PARENT,
                                                     (int) (200 * getResources().getDisplayMetrics().density) //200dp en pixeles
                                             );
@@ -136,7 +136,7 @@ public class VerComunicadosActivity extends AppCompatActivity {
                                     linea = reader.readLine();
                                 }
                             } catch (FileNotFoundException e) {
-                                Toast.makeText(VerComunicadosActivity.this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VerComunicadosActivity.this, "No ha realizado comunicados en esta fecha", Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
                                 Toast.makeText(VerComunicadosActivity.this, "Error al leer el archivo", Toast.LENGTH_SHORT).show();
                             }

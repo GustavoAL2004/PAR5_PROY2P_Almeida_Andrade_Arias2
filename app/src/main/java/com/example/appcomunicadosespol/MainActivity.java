@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 reader.readLine();
                 if (cred_usuario.equals(usuario) && cred_contasenia.equals(contrasenia)) {
                     accesoConcedido = true;
+                    TableroComunicadosActivity.usuarioActual=usuario;
                 }
             }
         } catch (IOException e) {

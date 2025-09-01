@@ -1,6 +1,7 @@
 package com.example.appcomunicadosespol;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,15 +30,13 @@ public class TableroComunicadosActivity extends AppCompatActivity {
     private Button botonOrdenarTitulo;
     private Button botonGuardarLista;
     private Button botonCancelar;
-
-    private List<Comunicado> listaComunicados;
+    public static String usuarioActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tablero_comunicados);
 
-        // 1. Initialize UI components
         miTabla = findViewById(R.id.mi_tabla);
         botonVolver = findViewById(R.id.imagebuttonVolver);
         botonOrdenarTitulo = findViewById(R.id.button_OrdernarPorTitulo);
@@ -42,57 +45,161 @@ public class TableroComunicadosActivity extends AppCompatActivity {
 
         cargarDatosIniciales();
 
-        botonVolver.setOnClickListener(v -> finish());
+        botonVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        botonOrdenarTitulo.setOnClickListener(v -> ordenarPorTitulo());
+        botonOrdenarTitulo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ordenarPorTitulo();
+            }
+        });
 
         botonGuardarLista.setOnClickListener(v -> {
+            //Falta serializar
             Toast.makeText(this, "Lista guardada correctamente.", Toast.LENGTH_SHORT).show();
         });
 
-        botonCancelar.setOnClickListener(v -> finish());
+        botonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cargarDatosIniciales();
+            }
+        });
     }
-
     private void cargarDatosIniciales() {
-        // Here we read from the file
-        LectorComunicados lector = new LectorComunicados();
+        miTabla.removeAllViews();
+        try (FileInputStream fi = openFileInput("comunicado.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
 
-        listaComunicados = lector.leerComunicados("path/to/comunicados.txt");  //no coge la direccion del archivo
-        mostrarComunicadosEnTabla(listaComunicados);
+            String linea=reader.readLine();
+            while(linea!=null){
+                String[] partes=linea.split(",");
+
+                if(partes[partes.length-1].equals(usuarioActual)){
+
+                    //Se crea la fila de tabla
+                    TableRow fila = new TableRow(this);
+
+                    fila.setLayoutParams(new TableLayout.LayoutParams(
+                            TableLayout.LayoutParams.MATCH_PARENT,
+                            TableLayout.LayoutParams.WRAP_CONTENT
+                    ));
+
+                    String titulo =partes[3];
+                    //Se crean los TextView
+                    TextView tvTitulo = new TextView(this);
+                    tvTitulo.setText(titulo);
+                    tvTitulo.setLayoutParams(new TableRow.LayoutParams(
+                            0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+                    ));
+
+                    //tvTitulo.setPadding(8, 8, 8, 8);
+                    fila.addView(tvTitulo);
+
+                    if(partes[1].equals("Evento")){
+                        String fecha=partes[8];
+
+                        TextView tvFecha = new TextView(this);
+                        tvFecha.setText(fecha);
+                        tvFecha.setLayoutParams(new TableRow.LayoutParams(
+                                0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+                        ));
+
+                        //tvFecha.setPadding(8, 8, 8, 8);
+                        fila.addView(tvFecha);
+
+                    }else{
+                        TextView tvFecha = new TextView(this);
+                        tvFecha.setText("No contiene fecha porque es anuncio");
+                        tvFecha.setLayoutParams(new TableRow.LayoutParams(
+                                0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+                        ));
+
+                        //tvFecha.setPadding(8, 8, 8, 8);
+                        fila.addView(tvFecha);
+                    }
+                    //Se agrega la tabla
+                    miTabla.addView(fila);
+                }
+                linea=reader.readLine();
+            }
+
+        }catch (FileNotFoundException e){
+            Toast.makeText(this, "Este usuario no ha realizado comunicados", Toast.LENGTH_SHORT).show();
+
+        }catch (IOException e){
+            Toast.makeText(this, "Ocurrio un problema al leer el archivo", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void mostrarComunicadosEnTabla(List<Comunicado> comunicados) {
-        // Clear existing rows, except for the header
-        if (miTabla.getChildCount() > 1) {
-            miTabla.removeViews(1, miTabla.getChildCount() - 1);
+    private void ordenarPorTitulo(){
+        miTabla.removeAllViews();
+        ArrayList<String[]> lista=new ArrayList<>();
+        try (FileInputStream fi = openFileInput("comunicado.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
+            String linea=reader.readLine();
+            while(linea!=null) {
+                String[] partes = linea.split(",");
+
+                if (partes[partes.length - 1].equals(usuarioActual)) {
+                    lista.add(partes);
+                }
+                linea=reader.readLine();
+            }
+        }catch (FileNotFoundException e) {
+        }catch (IOException e) {
         }
 
-        for (Comunicado c : comunicados) {
-            TableRow row = new TableRow(this);
-            row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        //Se ordena la lista de comunicados por tema
+        Collections.sort(lista, new Comparator<String[]>() {
+            @Override
+            public int compare(String[] lista, String[] otraLista) {
+                return lista[3].trim().compareToIgnoreCase(otraLista[3].trim());
+            }
+        });
+        for(String[] partes:lista){
+            String titulo =partes[3];
 
+
+            //Se crea la fila de tabla
+            TableRow fila = new TableRow(this);
+
+            fila.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT
+            ));
+
+            //Se crean los TextView
             TextView tvTitulo = new TextView(this);
-            tvTitulo.setText(c.getTitulo());
-            tvTitulo.setPadding(8, 8, 8, 8);
+            tvTitulo.setText(titulo);
+            tvTitulo.setLayoutParams(new TableRow.LayoutParams(
+                    0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+            ));
+
+            //tvTitulo.setPadding(8, 8, 8, 8);
 
             TextView tvFecha = new TextView(this);
-            if (c instanceof Evento) {
-                tvFecha.setText(((Evento) c).getFecha());
-            } else {
-                tvFecha.setText("");
+            if(partes[1].equals("Evento")){
+                String fecha=partes[8];
+                tvFecha.setText(fecha);
+            }else{
+                tvFecha.setText("No contiene fecha porque es anuncio");
             }
-            tvFecha.setPadding(8, 8, 8, 8);
+            tvFecha.setLayoutParams(new TableRow.LayoutParams(
+                    0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+            ));
 
-            row.addView(tvTitulo);
-            row.addView(tvFecha);
-            miTabla.addView(row);
+            //tvFecha.setPadding(8, 8, 8, 8);
+
+            //Se agrega a la tabla
+            fila.addView(tvTitulo);
+            fila.addView(tvFecha);
+            miTabla.addView(fila);
         }
-    }
-
-    private void ordenarPorTitulo() {
-        // Sort the list of communiqués by title
-        Collections.sort(listaComunicados, Comparator.comparing(Comunicado::getTitulo));
-        // Rebuild the table with the sorted list
-        mostrarComunicadosEnTabla(listaComunicados);
     }
 }
