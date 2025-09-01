@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_app"
     tools:context=".PublicarComunicadosActivity">
 
     <ScrollView
@@ -301,11 +302,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:srcCompat="@android:drawable/ic_input_add" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="89dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <Button
@@ -331,7 +333,14 @@
                     android:onClick="LimpiarFormulario"
                     android:text="Cancelar"
                     android:textColor="@android:color/black" />
+
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                app:srcCompat="@drawable/espol_logo" />
 
         </LinearLayout>
     </ScrollView>

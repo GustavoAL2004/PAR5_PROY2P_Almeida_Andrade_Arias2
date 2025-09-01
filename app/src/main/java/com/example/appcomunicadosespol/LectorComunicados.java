@@ -49,15 +49,15 @@ public class LectorComunicados {
                                 );
                                 comunicados.add(anuncio);
                             } else {
-                                System.err.println("Línea de anuncio mal formada: " + linea);
+                                System.out.println("Línea de anuncio mal formada: " + linea);
                             }
                         }
 
                     } catch (NumberFormatException e) {
-                        System.err.println("Error al parsear ID o datos en la línea: " + linea);
+                        System.out.println("Error al parsear ID o datos en la línea: " + linea);
                     }
                 } else {
-                    System.err.println("Línea incompleta: " + linea);
+                    System.out.println("Línea incompleta: " + linea);
                 }
             }
         } catch (IOException e) {

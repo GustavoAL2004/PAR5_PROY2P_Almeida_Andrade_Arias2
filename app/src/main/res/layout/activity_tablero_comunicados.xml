@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_tablero_app"
     tools:context=".TableroComunicadosActivity">
 
     <LinearLayout
@@ -44,7 +45,10 @@
             android:id="@+id/button_OrdernarPorTitulo"
             android:layout_width="227dp"
             android:layout_height="59dp"
-            android:text="Ordernar por titulo" />
+            android:layout_gravity="center_horizontal"
+            app:backgroundTint="#000080"
+            android:textColor="@android:color/white"
+            android:text="Ordenar por título" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,13 +90,24 @@
             android:id="@+id/button_GuardarLista"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar Lista" />
+            app:backgroundTint="#000080"
+            android:text="Guardar Lista"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
 
         <Button
             android:id="@+id/button_Cancelar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancelar" />
+            app:backgroundTint="#000080"
+            android:text="Cancelar"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
