@@ -90,9 +90,7 @@ public class TableroComunicadosActivity extends AppCompatActivity {
     }
 
     private void ordenarPorTitulo() {
-        // Sort the list of communiqués by title
         Collections.sort(listaComunicados, Comparator.comparing(Comunicado::getTitulo));
-        // Rebuild the table with the sorted list
         mostrarComunicadosEnTabla(listaComunicados);
     }
 }

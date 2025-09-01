@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_menu_app"
     tools:context=".MenuActivity">
 
     <LinearLayout
@@ -17,30 +18,30 @@
             android:id="@+id/buttonVerComunicados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
             android:layout_margin="20dp"
+            android:background="@drawable/button_background_accent"
+            android:padding="15dp"
             android:text="Ver Comunicados"
-            android:textColor="@android:color/black"
-            />
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/buttonPublicarComunicados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/button_background_accent"
             android:layout_margin="20dp"
             android:text="Publicar Comunicados"
-            android:textColor="@android:color/black"
-            />
+            android:textColor="@android:color/white"
+            android:padding="15dp" />
 
         <Button
             android:id="@+id/buttonTableroComunicados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
+            android:background="@drawable/button_background_accent"
             android:layout_margin="20dp"
             android:text="Tablero Comunicados"
-            android:textColor="@android:color/black"
-            />
+            android:textColor="@android:color/white"
+            android:padding="15dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

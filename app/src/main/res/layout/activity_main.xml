@@ -5,29 +5,42 @@
     android:id="@+id/TextView_IniciarSesion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_main_app"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout_IniciarSesion"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/rounded_card_background"
         android:orientation="vertical"
         android:padding="24dp"
-        android:gravity="center_vertical"
+        app:constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498"
+        app:layout_constraintWidth_percent="0.8">
+
+        <ImageView
+            android:id="@+id/imageView_Logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/espol___logo_001" />
 
         <TextView
             android:id="@+id/textView_Titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             android:text="Iniciar Sesión"
             android:textAlignment="center"
+            android:textColor="#000080"
             android:textSize="34sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="32dp" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView_Usuario"
@@ -40,13 +53,12 @@
             android:id="@+id/editText_Usuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:background="@drawable/rounded_button"
-            android:inputType="text"
-            android:hint="Ej: mgomez"
             android:layout_marginBottom="16dp"
-            android:padding="12dp"
-            />
+            android:backgroundTint="#CCCCCC"
+            android:ems="10"
+            android:hint="Ej: mgomez"
+            android:inputType="text"
+            android:padding="12dp" />
 
         <TextView
             android:id="@+id/textView_Contraseña"
@@ -59,20 +71,20 @@
             android:id="@+id/editText_contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:background="@drawable/rounded_button"
-            android:inputType="textPassword"
-            android:hint="Ingrese su contraseña"
             android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            />
+            android:backgroundTint="#CCCCCC"
+            android:ems="10"
+            android:hint="Ingrese su contraseña"
+            android:inputType="textPassword"
+            android:padding="12dp" />
 
         <Button
             android:id="@+id/button_IniciarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_iniciar"
+            android:backgroundTint="#000080"
             android:onClick="IniciarSesion"
-            android:text="INICIAR SESIÓN" />
+            android:text="INICIAR SESIÓN"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
