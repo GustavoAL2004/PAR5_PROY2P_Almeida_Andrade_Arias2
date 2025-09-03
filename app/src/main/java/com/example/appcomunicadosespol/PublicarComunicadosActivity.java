@@ -24,9 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.example.appcomunicadosespol.Anuncio; // <-- Añade esta línea
-import com.example.appcomunicadosespol.Evento;  // <-- Y esta línea
-import com.example.appcomunicadosespol.Comunicado; // <-- Y esta
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -213,10 +210,8 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         if (checkBoxAdministrativo.isChecked()) audiencia += "Administrativo;";
         String lineaComunicado;
         String nombreArchivoImagen = "";
-        if (imageUriSeleccionada != null) {
-            nombreArchivoImagen = imageUriSeleccionada.getLastPathSegment();
-
         //Validaciones
+        boolean comprobacion=true;
         try {
             if (tipoSeleccionadoId == -1) {
                 throw new datosIncompletosException("Selecciona el tipo de comunicado.");
@@ -250,47 +245,52 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
             }
         } catch (datosIncompletosException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            comprobacion=false;
         }
+        if (imageUriSeleccionada != null) {
+            nombreArchivoImagen = imageUriSeleccionada.getLastPathSegment();
 
-        int ultimoId=0;
-        try(FileInputStream fis = openFileInput("comunicado.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis))){
-            String ultimaLinea = null;
-            String linea;
+        if(comprobacion){
+            int ultimoId=0;
+            try(FileInputStream fis = openFileInput("comunicado.txt");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(fis))){
+                String ultimaLinea = null;
+                String linea;
 
-            while ((linea = reader.readLine()) != null) {
-                ultimaLinea = linea;
+                while ((linea = reader.readLine()) != null) {
+                    ultimaLinea = linea;
+                }
+                    String[] partes = ultimaLinea.split(",");
+                    ultimoId = Integer.parseInt(partes[0].trim());
+            } catch (FileNotFoundException e) {
+                ultimoId=0;
+            }catch (IOException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-                String[] partes = ultimaLinea.split(",");
-                ultimoId = Integer.parseInt(partes[0].trim());
-        } catch (FileNotFoundException e) {
-            ultimoId=0;
-        }catch (IOException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-        ultimoId++;
-        String idComunicado = String.valueOf(ultimoId);
+            ultimoId++;
+            String idComunicado = String.valueOf(ultimoId);
 
-        if (tipoSeleccionadoId == R.id.radioButtonEsAnuncio) {
-            String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
-            Anuncio anuncio = new Anuncio(idComunicado,"Anuncio", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, nivelUrgencia);
-            lineaComunicado = anuncio.toString();
-        } else {
-            Evento evento = new Evento(idComunicado,"Evento", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, lugarTexto, fechaTexto);
-            lineaComunicado = evento.toString();
-        }
+            if (tipoSeleccionadoId == R.id.radioButtonEsAnuncio) {
+                String nivelUrgencia = spinnerNivelDeUrgencia.getSelectedItem().toString();
+                Anuncio anuncio = new Anuncio(idComunicado,"Anuncio", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, nivelUrgencia);
+                lineaComunicado = anuncio.toString();
+            } else {
+                Evento evento = new Evento(idComunicado,"Evento", areaSeleccionada, tituloText, audiencia, descripcionTexto, nombreArchivoImagen, lugarTexto, fechaTexto);
+                lineaComunicado = evento.toString();
+            }
 
-        try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(openFileOutput("comunicado.txt", MODE_APPEND)))){
-            writer.write(lineaComunicado+","+TableroComunicadosActivity.usuarioActual);
-            writer.newLine();
-        }catch (FileNotFoundException e){
-            Toast.makeText(this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();
-        }catch (IOException e){
-            e.printStackTrace();
-            Toast.makeText(this, "Error guardando comunicado", Toast.LENGTH_SHORT).show();
-        }
+            try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(openFileOutput("comunicado.txt", MODE_APPEND)))){
+                writer.write(lineaComunicado+","+TableroComunicadosActivity.usuarioActual);
+                writer.newLine();
+            }catch (FileNotFoundException e){
+                Toast.makeText(this, "No se encontro el archivo", Toast.LENGTH_SHORT).show();
+            }catch (IOException e){
+                e.printStackTrace();
+                Toast.makeText(this, "Error guardando comunicado", Toast.LENGTH_SHORT).show();
+            }
 
-        Toast.makeText(this, "Se ha publicado exitosamente su comunicado.", Toast.LENGTH_SHORT).show();
-        LimpiarFormulario(view);
+            Toast.makeText(this, "Se ha publicado exitosamente su comunicado.", Toast.LENGTH_SHORT).show();
+            LimpiarFormulario(view);
+        }
     }
         }}

@@ -3,6 +3,7 @@ package com.example.appcomunicadosespol;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -104,7 +105,7 @@ public class TableroComunicadosActivity extends AppCompatActivity {
                             0, TableRow.LayoutParams.WRAP_CONTENT, 1f
                     ));
 
-                    //tvTitulo.setPadding(8, 8, 8, 8);
+                    tvTitulo.setGravity(Gravity.CENTER);
                     fila.addView(tvTitulo);
 
                     if(partes[1].equals("Evento")){
@@ -116,7 +117,7 @@ public class TableroComunicadosActivity extends AppCompatActivity {
                                 0, TableRow.LayoutParams.WRAP_CONTENT, 1f
                         ));
 
-                        //tvFecha.setPadding(8, 8, 8, 8);
+                        tvFecha.setGravity(Gravity.CENTER);
                         fila.addView(tvFecha);
 
                     }else{
@@ -126,7 +127,7 @@ public class TableroComunicadosActivity extends AppCompatActivity {
                                 0, TableRow.LayoutParams.WRAP_CONTENT, 1f
                         ));
 
-                        //tvFecha.setPadding(8, 8, 8, 8);
+                        tvFecha.setGravity(Gravity.CENTER);
                         fila.addView(tvFecha);
                     }
                     //Se agrega la tabla
@@ -209,14 +210,7 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Serializa la lista de comunicados en un archivo con el nombre
-     * "comunicados_al_dia_mes_año.dat".
-     */
     private void guardarListaSerializada() {
-        // Obtenemos la lista a serializar. Para mantener el código original,
-        // se recrea la lista aquí. Es más eficiente tener la lista como una
-        // variable de la clase.
         ArrayList<String[]> lista = new ArrayList<>();
         try (FileInputStream fi = openFileInput("comunicado.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
@@ -230,30 +224,26 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error al preparar la lista para guardar.", Toast.LENGTH_SHORT).show();
-            return;
         }
 
         if (lista.isEmpty()) {
             Toast.makeText(this, "No hay comunicados para guardar.", Toast.LENGTH_SHORT).show();
-            return;
         }
+        if(!lista.isEmpty()) {
+            // Genera el nombre de archivo con la fecha actual
+            String fechaActual = new SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(new Date());
+            String nombreArchivo = "comunicados_al_" + fechaActual + ".dat";
 
-        // Genera el nombre de archivo con la fecha actual
-        String fechaActual = new SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(new Date());
-        String nombreArchivo = "comunicados_al_" + fechaActual + ".dat";
 
-        // Prepara los flujos para la serialización
-        try (FileOutputStream fos = openFileOutput(nombreArchivo, MODE_PRIVATE);
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            try (FileOutputStream fos = openFileOutput(nombreArchivo, MODE_PRIVATE);
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                oos.writeObject(lista);
+                Toast.makeText(this, "Lista guardada en " + nombreArchivo, Toast.LENGTH_LONG).show();
 
-            // Serializa el ArrayList completo. El contenido del ArrayList (String[])
-            // es serializable por defecto, por lo que no se necesita una clase adicional.
-            oos.writeObject(lista);
-            Toast.makeText(this, "Lista guardada en " + nombreArchivo, Toast.LENGTH_LONG).show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error al guardar la lista: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Error al guardar la lista", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
