@@ -1,4 +1,7 @@
 package com.example.appcomunicadosespol;
+
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,7 +10,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class TableroComunicadosActivity extends AppCompatActivity {
@@ -31,8 +37,6 @@ public class TableroComunicadosActivity extends AppCompatActivity {
     private Button botonGuardarLista;
     private Button botonCancelar;
     public static String usuarioActual;
-
-    private ArrayList<Comunicado> listaComunicados = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,98 +79,161 @@ public class TableroComunicadosActivity extends AppCompatActivity {
 
     private void cargarDatosIniciales() {
         miTabla.removeAllViews();
-        listaComunicados.clear();
-
         try (FileInputStream fi = openFileInput("comunicado.txt");
              BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
 
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                String[] partes = linea.split(",");
-                if (partes[partes.length - 1].equals(usuarioActual)) {
-                    // Crea el objeto Comunicado y lo agrega a la lista
-                    String tipo = partes[1];
-                    String titulo = partes[3];
-                    String fecha = partes[1].equals("Evento") ? partes[8] : "No contiene fecha porque es anuncio";
-                    listaComunicados.add(new Comunicado(titulo, fecha));
+            String linea=reader.readLine();
+            while(linea!=null){
+                String[] partes=linea.split(",");
 
-                    // Crea la fila de la tabla
+                if(partes[partes.length-1].equals(usuarioActual)){
+
+                    //Se crea la fila de tabla
                     TableRow fila = new TableRow(this);
+
                     fila.setLayoutParams(new TableLayout.LayoutParams(
                             TableLayout.LayoutParams.MATCH_PARENT,
                             TableLayout.LayoutParams.WRAP_CONTENT
                     ));
 
-                    // Crea y configura el TextView para el título
+                    String titulo =partes[3];
+                    //Se crean los TextView
                     TextView tvTitulo = new TextView(this);
                     tvTitulo.setText(titulo);
                     tvTitulo.setLayoutParams(new TableRow.LayoutParams(
                             0, TableRow.LayoutParams.WRAP_CONTENT, 1f
                     ));
+
+                    //tvTitulo.setPadding(8, 8, 8, 8);
                     fila.addView(tvTitulo);
 
-                    // Crea y configura el TextView para la fecha
-                    TextView tvFecha = new TextView(this);
-                    tvFecha.setText(fecha);
-                    tvFecha.setLayoutParams(new TableRow.LayoutParams(
-                            0, TableRow.LayoutParams.WRAP_CONTENT, 1f
-                    ));
-                    fila.addView(tvFecha);
+                    if(partes[1].equals("Evento")){
+                        String fecha=partes[8];
 
+                        TextView tvFecha = new TextView(this);
+                        tvFecha.setText(fecha);
+                        tvFecha.setLayoutParams(new TableRow.LayoutParams(
+                                0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+                        ));
+
+                        //tvFecha.setPadding(8, 8, 8, 8);
+                        fila.addView(tvFecha);
+
+                    }else{
+                        TextView tvFecha = new TextView(this);
+                        tvFecha.setText("No contiene fecha porque es anuncio");
+                        tvFecha.setLayoutParams(new TableRow.LayoutParams(
+                                0, TableRow.LayoutParams.WRAP_CONTENT, 1f
+                        ));
+
+                        //tvFecha.setPadding(8, 8, 8, 8);
+                        fila.addView(tvFecha);
+                    }
+                    //Se agrega la tabla
                     miTabla.addView(fila);
                 }
+                linea=reader.readLine();
             }
-        } catch (FileNotFoundException e) {
+
+        }catch (FileNotFoundException e){
             Toast.makeText(this, "Este usuario no ha realizado comunicados", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Toast.makeText(this, "Ocurrió un problema al leer el archivo", Toast.LENGTH_SHORT).show();
+
+        }catch (IOException e){
+            Toast.makeText(this, "Ocurrio un problema al leer el archivo", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void ordenarPorTitulo() {
-        if (listaComunicados.isEmpty()) {
-            Toast.makeText(this, "No hay comunicados para ordenar.", Toast.LENGTH_SHORT).show();
-            return;
+    private void ordenarPorTitulo(){
+        miTabla.removeAllViews();
+        ArrayList<String[]> lista=new ArrayList<>();
+        try (FileInputStream fi = openFileInput("comunicado.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
+            String linea=reader.readLine();
+            while(linea!=null) {
+                String[] partes = linea.split(",");
+
+                if (partes[partes.length - 1].equals(usuarioActual)) {
+                    lista.add(partes);
+                }
+                linea=reader.readLine();
+            }
+        }catch (FileNotFoundException e) {
+        }catch (IOException e) {
         }
 
-        // Ordena la lista de comunicados por el título
-        Collections.sort(listaComunicados, new Comparator<Comunicado>() {
+        //Se ordena la lista de comunicados por tema
+        Collections.sort(lista, new Comparator<String[]>() {
             @Override
-            public int compare(Comunicado c1, Comunicado c2) {
-                return c1.getTitulo().trim().compareToIgnoreCase(c2.getTitulo().trim());
+            public int compare(String[] lista, String[] otraLista) {
+                return lista[3].trim().compareToIgnoreCase(otraLista[3].trim());
             }
         });
+        for(String[] partes:lista){
+            String titulo =partes[3];
 
-        // Limpia la tabla y la vuelve a llenar con la lista ordenada
-        miTabla.removeAllViews();
-        for (Comunicado comunicado : listaComunicados) {
+
+            //Se crea la fila de tabla
             TableRow fila = new TableRow(this);
+
             fila.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.WRAP_CONTENT
             ));
 
+            //Se crean los TextView
             TextView tvTitulo = new TextView(this);
-            tvTitulo.setText(comunicado.getTitulo());
+            tvTitulo.setText(titulo);
             tvTitulo.setLayoutParams(new TableRow.LayoutParams(
                     0, TableRow.LayoutParams.WRAP_CONTENT, 1f
             ));
-            fila.addView(tvTitulo);
+
+            //tvTitulo.setPadding(8, 8, 8, 8);
 
             TextView tvFecha = new TextView(this);
-            tvFecha.setText(comunicado.getFecha());
+            if(partes[1].equals("Evento")){
+                String fecha=partes[8];
+                tvFecha.setText(fecha);
+            }else{
+                tvFecha.setText("No contiene fecha porque es anuncio");
+            }
             tvFecha.setLayoutParams(new TableRow.LayoutParams(
                     0, TableRow.LayoutParams.WRAP_CONTENT, 1f
             ));
-            fila.addView(tvFecha);
 
+            //tvFecha.setPadding(8, 8, 8, 8);
+
+            //Se agrega a la tabla
+            fila.addView(tvTitulo);
+            fila.addView(tvFecha);
             miTabla.addView(fila);
         }
-        Toast.makeText(this, "Lista ordenada por título.", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Serializa la lista de comunicados en un archivo con el nombre
+     * "comunicados_al_dia_mes_año.dat".
+     */
     private void guardarListaSerializada() {
-        if (listaComunicados.isEmpty()) {
+        // Obtenemos la lista a serializar. Para mantener el código original,
+        // se recrea la lista aquí. Es más eficiente tener la lista como una
+        // variable de la clase.
+        ArrayList<String[]> lista = new ArrayList<>();
+        try (FileInputStream fi = openFileInput("comunicado.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fi))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split(",");
+                if (partes[partes.length - 1].equals(usuarioActual)) {
+                    lista.add(partes);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error al preparar la lista para guardar.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (lista.isEmpty()) {
             Toast.makeText(this, "No hay comunicados para guardar.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -175,33 +242,18 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         String fechaActual = new SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(new Date());
         String nombreArchivo = "comunicados_al_" + fechaActual + ".dat";
 
+        // Prepara los flujos para la serialización
         try (FileOutputStream fos = openFileOutput(nombreArchivo, MODE_PRIVATE);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 
-            oos.writeObject(listaComunicados);
+            // Serializa el ArrayList completo. El contenido del ArrayList (String[])
+            // es serializable por defecto, por lo que no se necesita una clase adicional.
+            oos.writeObject(lista);
             Toast.makeText(this, "Lista guardada en " + nombreArchivo, Toast.LENGTH_LONG).show();
 
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error al guardar la lista: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private static class Comunicado implements Serializable {
-        private String titulo;
-        private String fecha;
-
-        public Comunicado(String titulo, String fecha) {
-            this.titulo = titulo;
-            this.fecha = fecha;
-        }
-
-        public String getTitulo() {
-            return titulo;
-        }
-
-        public String getFecha() {
-            return fecha;
         }
     }
 }

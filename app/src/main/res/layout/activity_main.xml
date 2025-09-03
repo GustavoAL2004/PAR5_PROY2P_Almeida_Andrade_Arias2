@@ -60,7 +60,8 @@
             android:ems="10"
             android:hint="Ej: mgomez"
             android:inputType="text"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:textColor="#161515" />
 
         <TextView
             android:id="@+id/textView_Contraseña"
@@ -78,7 +79,8 @@
             android:ems="10"
             android:hint="Ingrese su contraseña"
             android:inputType="textPassword"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:textColor="#1D1A1A" />
 
         <Button
             android:id="@+id/button_IniciarSesion"
