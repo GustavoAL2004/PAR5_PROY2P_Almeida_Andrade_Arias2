@@ -30,6 +30,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * La clase TableroComunicadosActivity representa una pantalla que muestra al usuario actual
+ * los títulos de sus comunicados con sus respectivas fechas,
+ * además permite ordenarlos por título y serializar la lista de comunicados.
+ */
+
 public class TableroComunicadosActivity extends AppCompatActivity {
 
     private TableLayout miTabla;
@@ -38,6 +44,12 @@ public class TableroComunicadosActivity extends AppCompatActivity {
     private Button botonGuardarLista;
     private Button botonCancelar;
     public static String usuarioActual;
+
+    /**
+     * Se ejecuta cuando Android crea la actividad e inicializa los elementos de la interfaz.
+     *
+     * @param savedInstanceState Información guardada anteriormente de la actividad.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,13 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         cargarDatosIniciales();
 
         botonVolver.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Regresa a la anterior pantalla.
+             *
+             * @param v Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View v) {
                 finish();
@@ -60,6 +79,14 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         });
 
         botonOrdenarTitulo.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Actualiza la tabla ordenando los comunicados por título.
+             *
+             * @param v Vista que realiza la acción al momento de hacer clic.
+             */
+
+
             @Override
             public void onClick(View v) {
                 ordenarPorTitulo();
@@ -71,12 +98,23 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         });
 
         botonCancelar.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Restaura la tabla de comunicados como se encontraba inicialmente.
+             *
+             * @param v Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View v) {
                 cargarDatosIniciales();
             }
         });
     }
+
+    /**
+     * Carga los datos iniciales de los comunicados y los muestra en la tabla.
+     */
 
     private void cargarDatosIniciales() {
         miTabla.removeAllViews();
@@ -144,6 +182,10 @@ public class TableroComunicadosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Ordena los comunicados por título y los muestra en la tabla.
+     */
+
     private void ordenarPorTitulo(){
         miTabla.removeAllViews();
         ArrayList<String[]> lista=new ArrayList<>();
@@ -164,6 +206,17 @@ public class TableroComunicadosActivity extends AppCompatActivity {
 
         //Se ordena la lista de comunicados por tema
         Collections.sort(lista, new Comparator<String[]>() {
+
+            /**
+             * Compara dos comunicados por su título
+             *
+             * @param lista Primer comunicado a comparar.
+             * @param otraLista Segundo comunicado a comparar.
+             * @return Un entero negativo si el primer título es menor,
+             *         un entero positivo si el primer título es mayor,
+             *         y cero si son iguales.
+             */
+
             @Override
             public int compare(String[] lista, String[] otraLista) {
                 return lista[3].trim().compareToIgnoreCase(otraLista[3].trim());
@@ -209,6 +262,11 @@ public class TableroComunicadosActivity extends AppCompatActivity {
             miTabla.addView(fila);
         }
     }
+
+    /**
+     * Guarda y serializa la lista de comunicados,
+     * además valida si la lista está vacía antes de guardarla.
+     */
 
     private void guardarListaSerializada() {
         ArrayList<String[]> lista = new ArrayList<>();

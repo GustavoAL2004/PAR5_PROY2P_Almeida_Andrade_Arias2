@@ -7,6 +7,11 @@ import java.util.List;
 
 public class LectorComunicados {
 
+    /**
+     * La clase LectorComunicados se encarga de leer los comunicados desde un archivo de texto,
+     * además convierte cada línea en un objeto Anuncio o Evento.
+     */
+
     public List<Comunicado> leerComunicados(String rutaArchivo) {
         List<Comunicado> comunicados = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {

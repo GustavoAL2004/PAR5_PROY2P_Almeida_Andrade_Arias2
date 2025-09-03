@@ -37,6 +37,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 
+/**
+ * La clase PublicarComunicadosActivity representa una pantalla que permite crear un comunicado,
+ * de tipo anuncio o evento, valida que los campos esten correctamente llenos,
+ * y lo guarda en el archivo "comunicado.txt".
+ */
+
 public class PublicarComunicadosActivity extends AppCompatActivity {
     private ImageButton botonvolver;
     private RadioGroup radiogrupo;
@@ -63,6 +69,13 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private Uri imageUriSeleccionada;
 
+    /**
+     * Se ejecuta cuando Android crea la actividad e inicializa los elementos de la interfaz.
+     *
+     * @param savedInstanceState Información guardada anteriormente de la actividad.
+     *
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +89,13 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
 
         botonvolver=findViewById(R.id.ImagebuttonVolver);
         botonvolver.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Regresa a la anterior pantalla
+             *
+             * @param v Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View v) {
                 finish();
@@ -133,6 +153,13 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
                 });
         botonAdjuntarImagen=findViewById(R.id.buttonAdjuntarImagen);
         botonAdjuntarImagen.setOnClickListener(new View.OnClickListener(){
+
+            /**
+             * Abre la galeria para que el usuario seleccione una imagen.
+             *
+             * @param view Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -142,6 +169,16 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         });
 
         radiogrupo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            /**
+             * Muestra u oculta partes de la pantalla dependiendo de la opción escogida.
+             * Si escoge la opción de "Anuncio", solo se ve la parte de anuncio.
+             * Si escoge la opción de "Evento", solo se ve la parte de evento.
+             *
+             * @param group Grupo de botones de opción.
+             * @param checkedId Id del botón seleccionado.
+             */
+
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radioButtonEsAnuncio) {
@@ -160,6 +197,13 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
 
         fecha=findViewById(R.id.editTextFecha);
         fecha.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Abre un calendario cuando se hace clic en el campo de fecha.
+             *
+             * @param v Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View v) {
                 Calendar calendario= Calendar.getInstance();
@@ -168,6 +212,17 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
                 int dia=calendario.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog PDP=new DatePickerDialog(PublicarComunicadosActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    /**
+                     * Se ejecuta al momento que el usuario selecciona una fecha en el calendario.
+                     * La fecha seleccionada se muestra en su respectivo campo.
+                     *
+                     * @param datePicker selector de fecha.
+                     * @param anio Año seleccionado.
+                     * @param mes Mes seleccionado.
+                     * @param dia Día seleccionado.
+                     */
+
                     @Override
                     public void onDateSet(DatePicker datePicker, int anio, int mes, int dia) {
                         String fechaSeleccionada=dia+"/"+(mes+1)+"/"+anio;
@@ -182,6 +237,13 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         botonPublicar=findViewById(R.id.buttonPublicar);
         botonCancelar=findViewById(R.id.buttonCancelar);
     }
+
+    /**
+     * Limpia todos los campos.
+     *
+     * @param view Vista que realiza la acción al momento de hacer clic.
+     */
+
     public void LimpiarFormulario(View view){
         titulo.setText("");
         descripcion.setText("");
@@ -195,6 +257,12 @@ public class PublicarComunicadosActivity extends AppCompatActivity {
         radiogrupo.clearCheck();
         imagenSeleccionada.setImageURI(null);
     }
+
+    /**
+     * Verifica que los campos esten completos y lo guarda en el archivo "comunicado.txt"
+     *
+     * @param view Vista que realiza la acción al momento de hacer clic.
+     */
 
     public void PublicarComunicado(View view){
         String tituloText = titulo.getText().toString().trim();

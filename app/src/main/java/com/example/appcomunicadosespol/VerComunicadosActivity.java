@@ -29,6 +29,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Calendar;
 
+/**
+ *  La clase VerComunicadosActivity representa una pantalla para ver los comunicados por fecha,
+ *  permite volver atrás y elegir una fecha para mostrar los cmunicados guardados.
+ */
+
 public class VerComunicadosActivity extends AppCompatActivity {
 
     private EditText editText_Fecha;
@@ -36,6 +41,13 @@ public class VerComunicadosActivity extends AppCompatActivity {
     private ImageButton botonVolver;
     private Button BotonFecha;
     private LinearLayout contenidoDinamico;
+
+    /**
+     * Se ejecuta cuando Android crea la actividad e inicializa los elementos de la interfaz.
+     *
+     * @param savedInstanceState Información guardada anteriormente de la actividad.
+     *
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +66,13 @@ public class VerComunicadosActivity extends AppCompatActivity {
 
         //BotonVolver
         botonVolver.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Regresa a la anterior pantalla.
+             *
+             * @param v Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View v) {
                 finish();
@@ -63,6 +82,13 @@ public class VerComunicadosActivity extends AppCompatActivity {
 
         //Uso de calendario para seleccionar fecha
         botonFecha.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Muestra los eventos correspondientes a la fecha seleccionada.
+             *
+             * @param view Vista que realiza la acción al momento de hacer clic.
+             */
+
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -70,6 +96,18 @@ public class VerComunicadosActivity extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get((Calendar.DAY_OF_MONTH));
                 DatePickerDialog datePick = new DatePickerDialog(VerComunicadosActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                    /**
+                     * Muestra en pantalla los eventos que coincidan con la fecha seleccionada,
+                     * leyendo los datos del archivo "comunicado.txt".
+                     *
+                     * @param datePicker selector de fecha.
+                     * @param anioSel Año seleccionado.
+                     * @param mesSel Mes seleccionado.
+                     * @param daySel Día seleccionado.
+                     */
+
+
                     @Override
                     public void onDateSet(DatePicker datePicker, int anioSel, int mesSel, int daySel) {
                         String fechaSeleccionada = daySel + "/" + (mesSel + 1) + "/" + anioSel;

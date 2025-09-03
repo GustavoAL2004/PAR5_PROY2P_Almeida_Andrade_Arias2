@@ -23,11 +23,24 @@ import java.io.InputStreamReader;
 import android.view.View;
 import android.widget.Toast;
 
+/**
+ * La clase MainActivity representa una pantalla de inicio de sesión,
+ * donde valida si el usuario y la contraseña ingresados sean correctos.
+ */
+
+
 public class MainActivity extends AppCompatActivity {
     private LinearLayout linearLayout_IniciarSesion;
     private EditText editText_Usuario;
     private EditText editText_contraseña;
     private Button button_IniciarSesion;
+
+    /**
+     * Se ejecuta cuando Android crea la actividad e inicializa los elementos de la interfaz.
+     *
+     * @param savedInstanceState Información guardada anteriormente de la actividad.
+     *
+     */
 
 
     @Override
@@ -47,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         button_IniciarSesion=findViewById(R.id.button_IniciarSesion);
 
     }
+
+    /**
+     * Valida si el usuario y contraseña son correctos para iniciar sesión.
+     *
+     * @param view Vista que realiza la acción al momento de dar clic en el botón iniciar sesión.
+     */
 
     public void IniciarSesion(View view) {
         String usuario = editText_Usuario.getText().toString();
