@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
  * Ver comunicados, Publicar comunicado o Tablero Comunicados.
  */
 
+
 public class MenuActivity extends AppCompatActivity {
     private Button botonVerComunicados;
     private Button botonPublicarComunicados;
